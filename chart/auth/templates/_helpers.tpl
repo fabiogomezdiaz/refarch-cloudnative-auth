@@ -32,6 +32,10 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
   - "/bin/bash"
   - "-c"
   - "until curl --max-time 1 {{ include "auth.customer.url" . }}; do echo waiting for customer-service; sleep 1; done"
+  resources:
+{{ toYaml .Values.resources | indent 4 }}
+  securityContext:
+  {{- include "auth.securityContext" . | indent 4 }}
 {{- end }}
 {{- end }}
 
@@ -69,6 +73,13 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- .Release.Name }}-{{ .Chart.Name }}-hs256key
   {{- end }}
 {{- end -}}
+
+{{/* Auth Security Context */}}
+{{- define "auth.securityContext" }}
+{{- range $key, $value := .Values.securityContext }}
+{{ $key }}: {{ $value }}
+{{- end }}
+{{- end }}
 
 {{/* Istio Gateway */}}
 {{- define "auth.istio.gateway" }}

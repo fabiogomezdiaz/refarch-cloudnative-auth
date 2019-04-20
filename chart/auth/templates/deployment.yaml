@@ -36,6 +36,8 @@ spec:
           failureThreshold: 6
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        securityContext:
+        {{- include "auth.securityContext" . | indent 10 }}
         env:
         {{- include "auth.environmentvariables" . | indent 8 }}
         {{- include "auth.customer.environmentvariables" . | indent 8 }}
