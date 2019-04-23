@@ -1,4 +1,5 @@
 sudo: required
+dist: xenial
 language: java
 jdk:
   - openjdk8
@@ -74,7 +75,13 @@ jobs:
       services:
       - docker
       env:
+      # Minikube variables
       - CHANGE_MINIKUBE_NONE_USER=true
+      - MINIKUBE_WANTUPDATENOTIFICATION=false
+      - MINIKUBE_WANTREPORTERRORPROMPT=false
+      - MINIKUBE_HOME=$HOME
+      - KUBECONFIG=$HOME/.kube/config
+      # Application variables
       - CHART_NAME=auth
       - CUSTOMER_CHART_NAME=customer
       install:
@@ -113,7 +120,6 @@ jobs:
       # Get Deployment Name
       - DEPLOYMENT="deployment/${RELEASE_NAME}-${CHART_NAME}"
       # Wait for deployment to be ready
-      - kubectl get pods -w &
       - kubectl rollout status ${DEPLOYMENT}
       # Get logs
       - kubectl logs -f ${DEPLOYMENT} &
