@@ -35,7 +35,7 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
   - "-c"
   - "until curl --max-time 1 {{ include "auth.customer.url" . }}; do echo waiting for customer-service; sleep 1; done"
   resources:
-{{ toYaml .Values.resources | indent 4 }}
+  {{- include "auth.resources" . | indent 4 }}
   securityContext:
   {{- include "auth.securityContext" . | indent 4 }}
 {{- end }}
@@ -75,6 +75,14 @@ chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     {{- .Release.Name }}-{{ .Chart.Name }}-hs256key
   {{- end }}
 {{- end -}}
+
+{{/* Auth Resources */}}
+{{- define "auth.resources" }}
+limits:
+  memory: {{ .Values.resources.limits.memory }}
+requests:
+  memory: {{ .Values.resources.requests.memory }}
+{{- end }}
 
 {{/* Auth Security Context */}}
 {{- define "auth.securityContext" }}
