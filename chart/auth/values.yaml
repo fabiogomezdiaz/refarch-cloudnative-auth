@@ -14,7 +14,7 @@ service:
 
 ingress:
   enabled: false
-  hostname: "auth.bluecompute.com"
+  hostname: #auth.bluecompute.com
   path: /oauth
   annotations:
     ingress.bluemix.net/redirect-to-https: "True"
