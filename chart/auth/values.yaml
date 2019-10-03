@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ibmcase/bluecompute-auth
+  repository: fabiogomezdiaz/bluecompute-auth
   tag: 0.6.0
   pullPolicy: Always
 
@@ -42,7 +42,7 @@ global:
 
 bash:
   image:
-    repository: ibmcase/bluecompute-bash-curl-ssl
+    repository: fabiogomezdiaz/bluecompute-bash-curl-ssl
     tag: latest
     pullPolicy: IfNotPresent
 

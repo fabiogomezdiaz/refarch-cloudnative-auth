@@ -53,7 +53,7 @@ COUCHDB_IP=$(docker inspect couchdb | jq -r '.[0].NetworkSettings.IPAddress')
 
 # Start Customer Container and Connect to local MySQL Service
 echo "Starting Customer container at http://${COUCHDB_USER}:${COUCHDB_PASSWORD}@${COUCHDB_IP}:5984"
-docker run --name customer -d -p 8082:8082 -p 8092:8092 -e COUCHDB_USER=${COUCHDB_USER} -e COUCHDB_PASSWORD=${COUCHDB_PASSWORD} -e COUCHDB_HOST="${COUCHDB_IP}" -e COUCHDB_PORT="5984" -e HS256_KEY="${HS256_KEY}" ibmcase/bluecompute-customer:0.6.0
+docker run --name customer -d -p 8082:8082 -p 8092:8092 -e COUCHDB_USER=${COUCHDB_USER} -e COUCHDB_PASSWORD=${COUCHDB_PASSWORD} -e COUCHDB_HOST="${COUCHDB_IP}" -e COUCHDB_PORT="5984" -e HS256_KEY="${HS256_KEY}" fabiogomezdiaz/bluecompute-customer:0.6.0
 # Check that the Customer container is running
 docker ps
 # Check logs to see if it started properly

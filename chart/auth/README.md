@@ -3,7 +3,7 @@
 ## Introduction
 This chart will deploy a Spring Boot Application with a Customer database onto a Kubernetes Cluster.
 
-![Application Architecture](https://github.com/fabiogomezdiaz/refarch-cloudnative-auth/raw/spring/static/diagrams/auth.png?raw=true)
+![Application Architecture](https://github.com/fabiogomezdiaz/refarch-cloudnative-auth/raw/master/static/diagrams/auth.png?raw=true)
 
 Here is an overview of the chart's features:
 - Leverage [`Spring Boot`](https://projects.spring.io/spring-boot/) framework to build a Microservices application.
@@ -15,10 +15,10 @@ Here is an overview of the chart's features:
 
 ## Chart Source
 The source for the `Auth` chart can be found at:
-* https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-auth/tree/spring/chart/auth
+* https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-auth/tree/master/chart/auth
 
 The source for the `Customer` chart can be found at:
-* https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/spring/chart/customer
+* https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-customer/tree/master/chart/customer
 
 ## APIs
 - GET `/oauth/authorize`
@@ -28,7 +28,7 @@ The source for the `Customer` chart can be found at:
 To deploy the Auth Chart and its Customer dependency Chart to a Kubernetes cluster using Helm CLI, follow the instructions below:
 ```bash
 # Add helm repos for Customer and CouchDB Charts
-helm repo add ibmcase-charts https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
+helm repo add ibmcase https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 
 # Install CouchDB Chart
@@ -44,7 +44,7 @@ helm upgrade --install couchdb \
   incubator/couchdb
 
 # Install Customer Chart
-helm upgrade --install customer ibmcase-charts/customer
+helm upgrade --install customer ibmcase/customer
 
 # Clone auth repository:
 git clone http://github.com/refarch-cloudnative-micro-auth.git

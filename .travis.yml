@@ -16,7 +16,7 @@ env:
     - TEST_USER=testuser
     - TEST_PASSWORD=passw0rd
     # Customer
-    - CUSTOMER_IMAGE_NAME=ibmcase/bluecompute-customer:0.6.0
+    - CUSTOMER_IMAGE_NAME=fabiogomezdiaz/bluecompute-customer:0.6.0
     - CUSTOMER_SERVICE_PORT=8082
     - CUSTOMER_MANAGEMENT_PORT=8092
     - CUSTOMER_RELEASE_NAME=customer
@@ -88,11 +88,11 @@ jobs:
         - true
       before_script:
       # Install minikube and helm
-      - wget https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/scripts/install_minikube_and_helm.sh && chmod +x install_minikube_and_helm.sh && bash install_minikube_and_helm.sh && rm install_minikube_and_helm.sh
+      - wget https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/scripts/install_minikube_and_helm.sh && chmod +x install_minikube_and_helm.sh && bash install_minikube_and_helm.sh && rm install_minikube_and_helm.sh
       # Install CouchDB Chart
       - helm upgrade --install couchdb --version 0.2.2 --set service.externalPort=5985,fullnameOverride=${CUSTOMER_RELEASE_NAME}-couchdb,createAdminSecret=true,adminUsername=${COUCHDB_USER},adminPassword=${COUCHDB_PASSWORD},clusterSize=1,persistentVolume.enabled=false incubator/couchdb
       # Install Customer Chart
-      - helm upgrade --install ${CUSTOMER_RELEASE_NAME} --version 0.6.0 --set couchdb.adminUsername=${COUCHDB_USER},couchdb.adminPassword=${COUCHDB_PASSWORD},testUser.createUser=true,testUser.username=${TEST_USER},testUser.password=${TEST_PASSWORD} ibmcase-charts/${CUSTOMER_CHART_NAME}
+      - helm upgrade --install ${CUSTOMER_RELEASE_NAME} --version 0.6.0 --set couchdb.adminUsername=${COUCHDB_USER},couchdb.adminPassword=${COUCHDB_PASSWORD},testUser.createUser=true,testUser.username=${TEST_USER},testUser.password=${TEST_PASSWORD} ibmcase/${CUSTOMER_CHART_NAME}
       # Get Deployment Name
       - DEPLOYMENT="deployment/${CUSTOMER_RELEASE_NAME}-${CUSTOMER_CHART_NAME}"
       # Wait for deployment to be ready

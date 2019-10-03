@@ -1,7 +1,7 @@
 # refarch-cloudnative-micro-auth: Secure REST API with OAuth 2.0 and Authorization Service
 
 *This project is part of the 'IBM Cloud Native Reference Architecture' suite, available at
-https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring*
+https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/tree/master*
 
 ## Table of Contents
   * [Introduction](#introduction)
@@ -23,7 +23,7 @@ https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/sp
     + [Contributing a New Chart Package to Microservices Reference Architecture Helm Repository](#contributing-a-new-chart-package-to-microservices-reference-architecture-helm-repository)
 
 ## Introduction
-This project demonstrates how to authenticate the API user as well as enable OAuth 2.0 authorization for all OAuth protected APIs in the BlueCompute reference application. The Spring Authorization Server is used as an OAuth provider; the BlueCompute reference application delegates authentication and authorization to this component, which verifies credentials using the [Auth Microservice](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-auth/tree/spring).
+This project demonstrates how to authenticate the API user as well as enable OAuth 2.0 authorization for all OAuth protected APIs in the BlueCompute reference application. The Spring Authorization Server is used as an OAuth provider; the BlueCompute reference application delegates authentication and authorization to this component, which verifies credentials using the [Auth Microservice](https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-auth/tree/master).
 
 Here is an overview of the project's features:
 - Leverage [`Spring Boot`](https://projects.spring.io/spring-boot/) framework to build a Microservices application.
@@ -37,7 +37,7 @@ Here is an overview of the project's features:
 
 ![Application Architecture](static/diagrams/auth.png?raw=true)
 
-* The Authorization microservice leverages the [Auth Microservice](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/spring) as an identity provider.
+* The Authorization microservice leverages the [Auth Microservice](https://github.com/fabiogomezdiaz/refarch-cloudnative-auth/tree/master) as an identity provider.
 * When username/password is passed in, the Authorization microservice calls the Auth microservice using Spring Feign Client.
 * Authorization microservice checks the password against the password returned by the Auth API.  If it matches, `HTTP 200` is returned to indicate that the username/password are valid, `HTTP 401` is returned to indicate that the username/password is invalid.
 
@@ -49,7 +49,7 @@ Here is an overview of the project's features:
 * When a client wishes to acquire an OAuth token to call a protected API, it calls the OAuth Provider (Authorization microservice) token endpoint with the username/password of the user and requests a token with scope `blue`.
 * Authorization microservice will call the Auth microservice to get the Auth object assicated with the username/password and perform the validation.
 * If the username/password are valid, `HTTP 200` is returned, along with a JWT (signed using a HS256 shared secret) in the JSON response under `access_token` which contains the auth ID of the user passed in in the `user_name` claim.
-* The client uses the JWT in the `Authorization` header as a bearer token to call other Resource Servers that have OAuth protected API (such as the [Orders microservice](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/spring)).
+* The client uses the JWT in the `Authorization` header as a bearer token to call other Resource Servers that have OAuth protected API (such as the [Orders microservice](https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-orders/tree/master)).
 * The service implementing the REST API verifies that the JWT is valid and signed using the shared secret, then extracts the `user_name` claim from the JWT to identify the caller.
 * The JWT is encoded with scope `blue` and the the expiry time in `exp`; once the token is generated there is no additional interaction between the Resource Server and the OAuth server.
 
@@ -61,8 +61,8 @@ Following the [OAuth 2.0 specification](https://tools.ietf.org/html/rfc6749), th
 
 The BlueCompute reference application supports the following clients and grant types:
 
-- The [BlueCompute Web Application](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring) using client ID `bluecomputeweb` and client secret `bluecomputewebs3cret` supports OAuth 2.0 Password grant type.
-- The [BlueCompute Mobile Application](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile) using client ID `bluecomputemobile` and client secret `bluecomputemobiles3cret` supports OAuth 2.0 Implicit grant type.
+- The [BlueCompute Web Application](https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-web/tree/master) using client ID `bluecomputeweb` and client secret `bluecomputewebs3cret` supports OAuth 2.0 Password grant type.
+- The [BlueCompute Mobile Application](https://github.com/fabiogomezdiaz/refarch-cloudnative-bluecompute-mobile) using client ID `bluecomputemobile` and client secret `bluecomputemobiles3cret` supports OAuth 2.0 Implicit grant type.
 
 The BlueCompute application has one scope, `blue`.
 
@@ -70,7 +70,7 @@ The BlueCompute application has one scope, `blue`.
 In this section, we are going to deploy the Auth Application, along with a Customer service, to a Kubernetes cluster using Helm. To do so, follow the instructions below:
 ```bash
 # Add helm repos for Customer and CouchDB Charts
-helm repo add ibmcase-charts https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
+helm repo add ibmcase https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 
 # Install CouchDB Chart
@@ -86,7 +86,7 @@ helm upgrade --install couchdb \
   incubator/couchdb
 
 # Install Customer Chart
-helm upgrade --install customer ibmcase-charts/customer
+helm upgrade --install customer ibmcase/customer
 
 # Go to Chart Directory
 cd chart/auth
@@ -111,7 +111,7 @@ In the following section you validate that the Auth chart was deployed successfu
 ## Validate Auth Service
 
 ### Validate the password flow of the authorization service
-The [Web Application](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring) uses the password flow to obtain a password token.  It uses Client ID `bluecomputeweb` and Client Secret `bluecomputewebs3cret`.  For a user `user` with password `passw0rd`, run the following to obtain an access token with scope `blue`:
+The [Web Application](https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-web/tree/master) uses the password flow to obtain a password token.  It uses Client ID `bluecomputeweb` and Client Secret `bluecomputewebs3cret`.  For a user `user` with password `passw0rd`, run the following to obtain an access token with scope `blue`:
 ```bash
 curl -i \
    -X POST \
@@ -139,7 +139,7 @@ Server: Jetty(9.2.16.v20160414)
 The response JSON returned will contain an `access_token`.  Use the debugger at [jwt.io](https://jwt.io) to decode the token and validate the signature by pasting the `access_token` into the `Encoded` text field, and pasting the HS256 shared secret in the `Verify Signature` text box.  You should observe the `client_id` and `scope` claims in the payload correspond to the client ID and scope passed in on the request query, the `user_name` corresponds to the auth ID of `user` returned from the Auth Service, and the signature is verified.
 
 ### Validate the implicit flow of the authorization service
-The [Mobile application](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile) uses the implicit flow to create a token by opening a browser and retrieving the OAuth token once the authorization flow is complete.
+The [Mobile application](https://github.com/fabiogomezdiaz/refarch-cloudnative-bluecompute-mobile) uses the implicit flow to create a token by opening a browser and retrieving the OAuth token once the authorization flow is complete.
 
 To validate that this works, open a browser window and navigate to the following URL.  This requests the token with scope `blue` using the client id `bluecomputemobile` with the client secret `bluecomputemobiles3cret`. When the full authorization flow is completed, the authorization server will redirect the browser to `https://ibm.com`.
 
@@ -158,10 +158,10 @@ You can also run the Auth Application locally on Docker. Before we show you how 
 
 ### Setup: Deploy Customer Docker Container
 The easiest way to to setup the customer service is with a docker container. To do so, follow this guide from the customer service GitHub page:
-https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/spring#deploy-customer-application-on-docker
+https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-customer/tree/master#deploy-customer-application-on-docker
 
 Then you must create a customer record by following the setup section and step 1 in the following guide:
-https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/spring#validate-the-customer-microservice-api
+https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-customer/tree/master#validate-the-customer-microservice-api
 
 Lastly, you must obtain the customer container's IP address:
 ```bash
@@ -190,7 +190,7 @@ docker run --name auth \
 Where:
 * `${CUSTOMER_IP_ADDRESS}` is the IP address of the Customer container, which is only accessible from the Docker container network.
 * `${HS256_KEY}` is the 2048-bit secret, which must match that of the customer service.
-  + [Here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/spring#b-create-a-temporary-hs256-shared-secret) the key that's used in the customer service, along with instructions on how to create your own.
+  + [Here](https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-customer/tree/master#b-create-a-temporary-hs256-shared-secret) the key that's used in the customer service, along with instructions on how to create your own.
 
 You have successfully deployed the Auth container! To validate, follow the instructions in the [Validate Auth Service](#validate-auth-service) section.
 
@@ -215,16 +215,16 @@ You have successfully deployed the Auth service locally! To validate, follow the
 If you would like to setup an automated Jenkins CI/CD Pipeline for this repository, we provided a sample [Jenkinsfile](Jenkinsfile), which uses the [Jenkins Pipeline](https://jenkins.io/doc/book/pipeline/) syntax of the [Jenkins Kubernetes Plugin](https://github.com/jenkinsci/kubernetes-plugin) to automatically create and run Jenkis Pipelines from your Kubernetes environment.
 
 To learn how to use this sample pipeline, follow the guide below and enter the corresponding values for your environment and for this repository:
-* https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes
+* https://github.com/fabiogomezdiaz/refarch-cloudnative-devops-kubernetes
 
 ## Conclusion
 You have successfully deployed and tested the Auth Microservice both on a Kubernetes Cluster and in local Docker Containers.
 
-To see the Auth app working in a more complex microservices use case, checkout our Microservice Reference Architecture Application [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring).
+To see the Auth app working in a more complex microservices use case, checkout our Microservice Reference Architecture Application [here](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/tree/master).
 
 ## Contributing
 If you would like to contribute to this repository, please fork it, submit a PR, and assign as reviewers any of the GitHub users listed here:
-* https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-auth/graphs/contributors
+* https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-auth/graphs/contributors
 
 ### GOTCHAs
 1. We use [Travis CI](https://travis-ci.org/) for our CI/CD needs, so when you open a Pull Request you will trigger a build in Travis CI, which needs to pass before we consider merging the PR. We use Travis CI to test the following:
@@ -238,5 +238,5 @@ If you would like to contribute to this repository, please fork it, submit a PR,
     * Run API tests against the Helm Chart.
 
 ### Contributing a New Chart Package to Microservices Reference Architecture Helm Repository
-To contribute a new chart version to the [Microservices Reference Architecture](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring) helm repository, follow its guide here:
-* https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring#contributing-a-new-chart-to-the-helm-repositories
+To contribute a new chart version to the [Microservices Reference Architecture](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/tree/master) helm repository, follow its guide here:
+* https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/tree/master#contributing-a-new-chart-to-the-helm-repositories

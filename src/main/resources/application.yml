@@ -1,9 +1,3 @@
-eureka:
-  client:
-    enabled: false
-    registerWithEureka: false
-  fetchRegistry: false
-
 # Server configuration
 server:
   context-path:
