@@ -1,4 +1,9 @@
-apiVersion: v1
-description: BlueCompute Auth Microservice
+apiVersion: v2
 name: auth
 version: 0.6.0
+description: BlueCompute Auth Microservice
+home: https://github.com/fabiogomezdiaz/refarch-cloudnative-micro-auth
+maintainers:
+  - name: Fabio Gomez
+    email: fabio.gomez@ieee.org
+    url: https://github.com/fabiogomezdiaz
