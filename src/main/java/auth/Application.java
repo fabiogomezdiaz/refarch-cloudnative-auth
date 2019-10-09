@@ -11,6 +11,4 @@ public class Application {
         SpringApplication.run(Application.class, args);
         System.out.println("Auth microservice is ready for business...");
     }
-    
-    
 }

@@ -18,6 +18,9 @@ build
 .gradle
 /bin/
 
+# VS Code
+.vscode
+
 # Eclipse
 .classpath
 .project
