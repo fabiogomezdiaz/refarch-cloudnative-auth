@@ -58,7 +58,6 @@ labels:
   tier: backend
 
 securityContext:
-  runAsUser: 2000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
 
