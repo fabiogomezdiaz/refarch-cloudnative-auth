@@ -15,15 +15,15 @@ COPY src src
 RUN gradle build -x test
 
 # STAGE: Deploy
-FROM openjdk:8-jre-alpine
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.7
 
-# Install Extra Packages
-RUN apk --no-cache update \
- && apk add jq bash bc ca-certificates curl \
- && update-ca-certificates
+# OPTIONAL: Install Extra Packages
+#RUN apk --no-cache update \
+# && apk add jq bash bc ca-certificates curl \
+# && update-ca-certificates
 
-# Create app directory
-ENV APP_HOME=/app
+# Create app directory, chgrp, and chmod
+ENV APP_HOME=/home/jboss/app
 RUN mkdir -p $APP_HOME/scripts
 WORKDIR $APP_HOME
 
