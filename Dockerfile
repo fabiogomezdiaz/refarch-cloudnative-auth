@@ -24,7 +24,7 @@ FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.7
 
 # Create app directory, chgrp, and chmod
 ENV APP_HOME=/home/jboss/app
-RUN mkdir -p $APP_HOME/scripts
+RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
 # Copy jar file over from builder stage
@@ -32,14 +32,6 @@ COPY --from=builder /home/gradle/app/build/libs/micro-auth-0.0.1.jar $APP_HOME
 RUN mv ./micro-auth-0.0.1.jar app.jar
 
 COPY startup.sh startup.sh
-COPY scripts/max_heap.sh scripts/
-
-# Create user, chown, and chmod
-RUN adduser -u 2000 -G root -D blue \
-	&& chown -R 2000:0 $APP_HOME \
-	&& chmod -R u+x $APP_HOME/app.jar
-
-USER 2000
 
 EXPOSE 8083 8093
 ENTRYPOINT ["./startup.sh"]
